@@ -2,33 +2,46 @@
 /*
  * First Task
  */
-//$arr = [5,7,4,[2,[2,3,2],3,1],8,[1,4],3];
-$arr = [5,'text',4,[2,[2,3,2],3,1],8,[1,4],3];
-$sum = 0;
-function sum_second_element($arr, &$sum){
-        $second_elem = next($arr);
-        if (!is_array($second_elem)) {
-            $num = (float) $second_elem;
-            $sum += $num;
-        }
-    foreach ($arr as $key=>$value) {
-        if (is_array($value)) {
-            sum_second_element($value, $sum);
-        }
+function factory(... $functions) {
+    foreach ($functions as $func) {
+        $func();
     }
 }
-sum_second_element($arr, $sum);
-echo 'Сумма всех вторых элементов равна: ' . $sum;
-echo '<br>';
+
+factory(function() {
+        echo 'test1<br>';
+    },
+    function() {
+        echo 'test2<br>';
+    },
+    function() {
+        echo 'test3<br>';
+    });
 
 /*
  * Second Task
  */
-$string = 'агава';
-$arr = preg_split('//u',$string,-1,PREG_SPLIT_NO_EMPTY);
-$result = array_count_values($arr);
-foreach ($result as $key=>$value) {
-    echo $key . '=' . $value . '<br>';
-}
-?>
 
+$file = "resource.txt";
+$content = [1, 'key'=>'test2','test3'];
+
+function write_csv(string $file_name, array $text) {
+    $current_file = fopen($file_name, "w");
+    fputcsv ($current_file, $text);
+    fclose($current_file);
+}
+write_csv($file, $content);
+
+/*
+ * Third Task
+ */
+function read_csv(string $file_name) {
+    $current_file = fopen($file_name, "r");
+    $data = fgetcsv ($current_file, 1000);
+    fclose($current_file);
+    var_export($data);
+    return $data;
+
+}
+read_csv($file);
+?>
