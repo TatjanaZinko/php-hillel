@@ -1,34 +1,77 @@
 <?php
-/*
- * First Task
- */
-//$arr = [5,7,4,[2,[2,3,2],3,1],8,[1,4],3];
-$arr = [5,'text',4,[2,[2,3,2],3,1],8,[1,4],3];
-$sum = 0;
-function sum_second_element($arr, &$sum){
-        $second_elem = next($arr);
-        if (!is_array($second_elem)) {
-            $num = (float) $second_elem;
-            $sum += $num;
-        }
-    foreach ($arr as $key=>$value) {
-        if (is_array($value)) {
-            sum_second_element($value, $sum);
-        }
+abstract class Transport
+{
+    abstract protected function drive();
+}
+
+interface TransportInterface
+{
+    public function getType():string;
+
+    public function getWheelFormula():string;
+
+    public function getEngine():string;
+
+    public function getTransmission():string;
+}
+
+trait Calculator
+{
+    public function calcEnginePower(int $engineVolume, float $meanEffectivePressure, int $rotationFrequency):float
+    {
+        return $engineVolume * $meanEffectivePressure * $rotationFrequency / 120;
     }
 }
-sum_second_element($arr, $sum);
-echo 'Сумма всех вторых элементов равна: ' . $sum;
-echo '<br>';
 
-/*
- * Second Task
- */
-$string = 'агава';
-$arr = preg_split('//u',$string,-1,PREG_SPLIT_NO_EMPTY);
-$result = array_count_values($arr);
-foreach ($result as $key=>$value) {
-    echo $key . '=' . $value . '<br>';
+class Car extends Transport implements TransportInterface
+{
+    use Calculator;
+
+    protected $type = 'sedan';
+
+    protected $wheelFormula = '4x2';
+
+    protected $engine = 'petrol';
+
+    protected $transmission = 'auto';
+
+    public function getType():string
+    {
+        return $this->type;
+    }
+
+    public function getWheelFormula():string
+    {
+        return $this->wheelFormula;
+    }
+
+    public function getEngine():string
+    {
+        return $this->engine;
+    }
+
+    public function getTransmission():string
+    {
+        return $this->transmission;
+    }
+
+    public function drive(){
+        echo "Drive on road";
+    }
 }
-?>
 
+$kia = new Car;
+$kia->drive();
+echo '<br>';
+var_export($kia->getType());
+echo '<br>';
+var_export($kia->getWheelFormula());
+echo '<br>';
+var_export($kia->getEngine());
+echo '<br>';
+var_export($kia->getTransmission());
+echo '<br>';
+var_export($kia->calcEnginePower(1500, 0.9, 5000));
+
+
+?>
