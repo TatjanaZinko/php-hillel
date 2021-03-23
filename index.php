@@ -4,16 +4,26 @@ abstract class Transport
     abstract protected function drive();
 }
 
-interface TransportInterface
+interface TransportBodyType
 {
     public function getType():string;
+}
 
+interface TransportWheelFormula
+{
     public function getWheelFormula():string;
+}
 
+interface TransportEngineType
+{
     public function getEngine():string;
+}
 
+interface TransportTransmission
+{
     public function getTransmission():string;
 }
+
 
 trait Calculator
 {
@@ -23,7 +33,7 @@ trait Calculator
     }
 }
 
-class Car extends Transport implements TransportInterface
+class Car extends Transport implements TransportBodyType, TransportWheelFormula, TransportEngineType, TransportTransmission
 {
     use Calculator;
 
