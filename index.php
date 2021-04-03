@@ -23,13 +23,13 @@ function createColumns ($mysqli)
     $mysqli->query("ALTER TABLE products ADD product_price varchar(255)");
     $mysqli->query("ALTER TABLE products ADD product_image_link varchar(255)");
 
-//add columns to clients table
+    //add columns to clients table
     $mysqli->query("ALTER TABLE clients ADD client_name varchar(255)");
     $mysqli->query("ALTER TABLE clients ADD client_lastname varchar(255)");
     $mysqli->query("ALTER TABLE clients ADD client_email varchar(255)");
     $mysqli->query("ALTER TABLE clients ADD client_address varchar(255)");
 
-//add columns to order table
+    //add columns to order table
     $mysqli->query("ALTER TABLE orders ADD order_number varchar(255)");
     $mysqli->query("ALTER TABLE orders ADD order_date DATETIME");
     $mysqli->query("ALTER TABLE orders ADD client_id int");
@@ -39,9 +39,10 @@ function createColumns ($mysqli)
     $mysqli->query("ALTER TABLE orders ADD order_sum int");
 
     $mysqli->query("ALTER TABLE orders ALTER COLUMN (product_id) ");
+    $mysqli->query("ALTER TABLE orders ALTER COLUMN order_date DEFAULT GETDATE()");
 
 
-//add columns to payment table
+    //add columns to payment table
     $mysqli->query("ALTER TABLE payments ADD payment_number varchar(255)");
     $mysqli->query("ALTER TABLE payments ADD payment_date DATETIME");
     $mysqli->query("ALTER TABLE payments ADD order_id int");
@@ -55,29 +56,29 @@ createColumns ($mysqli);
 
 function addProducts ($mysqli)
 {
-//$mysqli->query("INSERT INTO products(product_name, product_price, product_image_link )
-//                      VALUES('tshirt', '200', '/tshirt.png')");
-//$mysqli->query("INSERT INTO products(product_name, product_price, product_image_link )
-//                      VALUES('pants', '300', '/pants.png')");
-//$mysqli->query("INSERT INTO products(product_name, product_price, product_image_link )
-//                      VALUES('skirt', '250', '/skirt.png')");
-//$mysqli->query("INSERT INTO products(product_name, product_price, product_image_link )
-//                      VALUES('jacket', '500', '/jacket.png')");
+    $mysqli->query("INSERT INTO products(product_name, product_price, product_image_link )
+                          VALUES('tshirt', '200', '/tshirt.png')");
+    $mysqli->query("INSERT INTO products(product_name, product_price, product_image_link )
+                          VALUES('pants', '300', '/pants.png')");
+    $mysqli->query("INSERT INTO products(product_name, product_price, product_image_link )
+                          VALUES('skirt', '250', '/skirt.png')");
+    $mysqli->query("INSERT INTO products(product_name, product_price, product_image_link )
+                          VALUES('jacket', '500', '/jacket.png')");
 
 }
-addProducts ($mysqli);
+//addProducts ($mysqli);
 
 function addClients ($mysqli)
 {
-//$mysqli->query("INSERT INTO clients (client_name, client_lastname, client_email, client_address )
-//                      VALUES('John', 'Black', 'john@gmail.com', 'Jensen Beach')");
-//$mysqli->query("INSERT INTO clients (client_name, client_lastname, client_email, client_address )
-//                      VALUES('Tom', 'Red', 'tom@gmail.com', 'Jensen Beach')");
-//$mysqli->query("INSERT INTO clients (client_name, client_lastname, client_email, client_address )
-//                      VALUES('Jacob', 'White', 'jacob@gmail.com', 'Jensen Beach')");
+    $mysqli->query("INSERT INTO clients (client_name, client_lastname, client_email, client_address )
+                          VALUES('John', 'Black', 'john@gmail.com', 'Jensen Beach')");
+    $mysqli->query("INSERT INTO clients (client_name, client_lastname, client_email, client_address )
+                          VALUES('Tom', 'Red', 'tom@gmail.com', 'Jensen Beach')");
+    $mysqli->query("INSERT INTO clients (client_name, client_lastname, client_email, client_address )
+                          VALUES('Jacob', 'White', 'jacob@gmail.com', 'Jensen Beach')");
 }
 
-addClients ($mysqli);
+//addClients ($mysqli);
 
 $cart_data = [1, 3, 5];
 
@@ -88,8 +89,10 @@ function addOrders ($mysqli, $cart_data)
         $mysqli->query("SELECT product_price INTO order_details FROM products WHERE (id == $id)");
     }
     $order_sum = $mysqli->query("SELECT COUNT(product_price) FROM order_details");
-    $mysqli->query("INSERT INTO orders (order_number, order_date, client_id, product_id, order_sum )
-                      VALUES('1111AA', GETDATE(), 3, $cart_data, $order_sum)");
+    $mysqli->query("INSERT INTO orders (order_number, client_id, product_id, order_sum )
+                      VALUES('1111AA', 3, $cart_data, $order_sum)");
     $mysqli->query("DROP TABLE order_details");
 }
+
+addOrders ($mysqli, $cart_data);
 
